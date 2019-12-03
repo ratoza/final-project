@@ -1,0 +1,378 @@
+#: import main todo
+
+<TodoGrid>:
+	id: todo_grid_id
+	viewclass: 'TodoCardView'
+	SelectableRecycleBoxLayout:
+		cols: 2
+		default_size: None, sp(70)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        spacing: 20
+        padding: 10
+        # orientation: 'vertical'
+
+<TodoCardView>:
+    # Draw a background to indicate selection
+    canvas.before:
+        Color:
+            rgba: (204, 0, 102, 1) if self.selected else self.color_label 
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+MainScreen:
+
+<MainScreen>:
+	id: todo_id
+	# display: entry
+	rows: 2
+	canvas:
+		Color:
+			rgba: (0, 102, 153, .2)
+		Rectangle:
+			pos: self.pos
+			size: self.size
+
+	BoxLayout:
+		size_hint_y: None
+		height: 50
+		background_normal: ''
+		background_color: (.1, .1, .1, 1)
+		Label:
+			text: "Todo List"
+
+	StackLayout:
+		orientation: 'lr-tb'
+		spacing: 10
+		padding: 10
+
+		GridLayout:
+			cols: 2
+			spacing: 0
+							
+			TodoGrid
+				id: todo_grid_id
+
+			StackLayout:
+				orientation: 'lr-tb'
+				spacing: 10
+				padding: [10, 0, 0, 10]
+				size_hint: (0.2, 1)
+				Button:
+					text: 'Create Todo'
+					size_hint: (1, .15)
+					on_press: todo_id.action_btn_press('create') 
+				Button:
+					text: 'Edit Todo'
+					size_hint: (1, .15)
+					on_press: todo_id.action_btn_press('edit')
+
+				Button:
+					text: 'Remove Todo'
+					size_hint: (1, .15)
+					on_press: todo_id.action_btn_press('remove')
+
+				Label:
+					text: ''
+					size_hint: (1, .24)
+
+<CustButton@Button>:
+    font_size: 20
+    color: 1, 1, 1, 1
+    size: 150, 50
+    background_normal: ''
+    # background_down: 'b'
+    size_hint: (.47, .3)
+
+<MainPopup>:
+	id: create_popup
+    size_hint: 0.8, 0.8
+    title: root.title_pop_up
+    title_size: root.height * 0.05
+    auto_dismiss: False
+    title_todo: title_todo
+    
+    date_todo_d: date_todo_d
+    date_todo_m: date_todo_m
+    date_todo_y: date_todo_y
+
+    
+    time_todo_h: time_todo_h
+    time_todo_m: time_todo_m
+    time_todo_a: time_todo_a
+    
+    color_blue_todo: color_blue_todo
+    color_red_todo: color_red_todo
+
+    done_todo: done_todo
+
+    wrapped_button: wrapped_button
+    BoxLayout:
+        orientation: 'vertical'
+        GridLayout:
+            cols: 2
+            padding: 10
+            spacing: 20
+
+            Label:
+                id: title_todo_label
+                text: "Title"
+                halign: "center"
+                font_size: root.height/25
+                text_size: self.width, None
+                center_y: .5
+                size_hint_y: None
+                height: dp(43)
+            TextInput:
+                id: title_todo
+                text: title_todo.text
+                halign: "center"
+                hint_text: "Please enter title"
+                font_size: root.height/25
+                text_size: self.width, None
+                center_y: .5
+                size_hint_y: None
+                height: dp(43)
+            Label:
+                id: date_todo_label
+                text: "Date"
+                halign: "center"
+                font_size: root.height/25
+                text_size: self.width, None
+                center_y: .5
+                size_hint_y: None
+                height: dp(43)
+            GridLayout:
+            	cols: 5
+            	rows: 1
+            	spacing: 2
+            	padding: 10
+	            TextInput:
+	                id: date_todo_d
+	                text: date_todo_d.text
+	                halign: "center"
+	                hint_text: "dd"
+	                font_size: root.height/25
+	                text_size: self.width, None
+	                center_y: .5
+	                size_hint_y: None
+	                height: dp(43)
+	                width: dp(50)
+	            Label:
+	            	text: '/'
+	            	halign: "center"
+	                font_size: root.height/25
+	                text_size: self.width, None
+	                center_y: .5
+	                size_hint: .2,None
+	                height: dp(43)
+	                width: dp(2)
+	            TextInput:
+	                id: date_todo_m
+	                text: date_todo_m.text
+	                halign: "center"
+	                hint_text: "mm"
+	                font_size: root.height/25
+	                text_size: self.width, None
+	                center_y: .5
+	                size_hint_y: None
+	                height: dp(43)
+	                width: dp(50)
+
+	            Label:
+	            	text: '/'
+	            	halign: "center"
+	                font_size: root.height/25
+	                text_size: self.width, None
+	                center_y: .5
+	                size_hint: .2,None
+	                height: dp(43)
+	                width: dp(2)
+	            TextInput:
+	                id: date_todo_y
+	                text: date_todo_y.text
+	                halign: "center"
+	                hint_text: "yyyy"
+	                font_size: root.height/25
+	                text_size: self.width, None
+	                center_y: .5
+	                size_hint_y: None
+	                height: dp(43)
+	                width: dp(100)
+            Label:
+                id: time_todo_label
+                text: "Time"
+                halign: "center"
+                font_size: root.height/25
+                text_size: self.width, None
+                center_y: .5
+                size_hint_y: None
+                height: dp(43)
+            GridLayout:
+            	cols: 5
+            	rows: 1
+            	spacing: 2
+            	padding: 10
+	            TextInput:
+	                id: time_todo_h
+	                text: time_todo_h.text
+	                halign: "center"
+	                font_size: root.height/25
+	                text_size: self.width, None
+	                hint_text: "hh"
+	                center_y: .5
+	                size_hint_y: None
+	                height: dp(43)
+	            Label:
+	            	text: ':'
+	            	halign: "center"
+	                font_size: root.height/25
+	                text_size: self.width, None
+	                center_y: .5
+	                size_hint: .2,None
+	                height: dp(43)
+	                width: dp(2)
+	            TextInput:
+	                id: time_todo_m
+	                text: time_todo_m.text
+	                halign: "center"
+	                font_size: root.height/25
+	                text_size: self.width, None
+	                hint_text: "mm"
+	                center_y: .5
+	                size_hint_y: None
+	                height: dp(43)
+	            Label:
+	            	text: ''
+	            	halign: "center"
+	                font_size: root.height/25
+	                text_size: self.width, None
+	                center_y: .5
+	                size_hint: .2,None
+	                height: dp(43)
+	                width: dp(2)
+	            TextInput:
+	                id: time_todo_a
+	                text: time_todo_a.text
+	                halign: "center"
+	                font_size: root.height/25
+	                text_size: self.width, None
+	                center_y: .5
+	                size_hint_y: None
+	                height: dp(43)
+	        Label:
+                id: color_todo_label
+                text: "Color"
+                halign: "center"
+                font_size: root.height/25
+                text_size: self.width, None
+                center_y: .5
+                size_hint_y: None
+                height: dp(63)
+            GridLayout:
+            	cols: 2
+            	rows: 1
+            	spacing: 2
+            	padding: 10
+            	height: dp(63)
+            	GridLayout:
+            		cols: 2
+            		canvas.before:
+				        Color:
+				            rgba: (1, 1, 1, 1) 
+				        Rectangle:
+				            pos: self.pos
+				            size: self.size
+					spacing: 10
+            		Label:
+            			text: 'Red'
+            			color: (0,0,0,1)
+	            	CustCheckBox:
+			            id : color_red_todo
+			            active: color_red_todo.active
+			            on_press: root.pick_color('red')
+			    GridLayout:
+			    	cols: 2
+            		canvas.before:
+				        Color:
+				            rgba: (1, 1, 1, 1) 
+				        Rectangle:
+				            pos: self.pos
+				            size: self.size
+					spacing: 10
+            		Label:
+            			text: 'Blue'
+            			color: (0,0,0,1)
+		            CustCheckBox:
+			            id : color_blue_todo
+			            active: color_blue_todo.active
+			            on_press: root.pick_color('blue')
+            
+            Label:
+            	text: 'Done'
+            	halign: "center"
+            	font_size: root.height/25
+            	text_size: self.width, None
+            	center_y: .5
+            	size_hint_y: None
+                height: dp(43)
+            CustCheckBox:
+            	canvas.before:
+			        Color:
+			            rgba: (1, 1, 1, 1) 
+			        Rectangle:
+			            pos: self.pos
+			            size: self.size
+	            id : done_todo
+	            active: done_todo.active
+
+        FloatLayout:
+	        CustButton:
+	            id: wrapped_button
+	        	pos_hint: {'x': 0, "y": 0}
+	            text: "Save"
+	            background_color: (0, 1, 0, 1)
+	            color: 0, 0, 0, 1
+	            on_release: root.save_todo()
+	        CustButton:
+	            id: wrapped_button
+		        pos_hint: {'right': 1, "y": 0}
+	            text: "Close"
+	            background_color: (1, 0, 0, 1)
+	            on_release: root.dismiss()
+
+<CustCheckBox@CheckBox>:
+	size_hint: (.5, 0.5)
+	background_checkbox_normal: ''
+	color: (204, 0, 102, 1) if self.active else (204, 0, 102, .3) 
+    size_hint_y: None
+    height: dp(43)
+
+
+<AlertPopup>:
+	size_hint: 0.5, 0.35
+    title: root.title
+    title_size: 16
+    GridLayout:
+    	cols: 1
+    	rows: 2
+    	spacing: 10
+    	padding: 10
+	    Label:
+	    	text: root.message
+            halign: "center"
+            font_size: 14
+            text_size: self.width, None
+            center_y: .5
+            size_hint_y: None
+            height: dp(43)
+        FloatLayout:
+		    Button:
+		    	pos_hint: {'center_x': .5, "center_y": .5}
+		    	size: 150, 50
+		    	text: 'Dismiss'
+		    	on_release: root.dismiss()
+		    	size_hint: (.4, .3)
+
